@@ -2,22 +2,26 @@ from rest_framework import serializers
 
 from posts.models import Group, Post, Comment
 
+# from django.contrib.auth import get_user_model
+# User = get_user_model()
+
 
 class GroupSerializer(serializers.ModelSerializer):
     class Meta:
         model = Group
-        fields = ('id', 'title', 'slug', 'description', 'posts')
+        fields = '__all__'
 
 
 class CommentSerializer(serializers.ModelSerializer):
     author = serializers.SlugRelatedField(slug_field='username',
                                           read_only=True)
-    post = serializers.PrimaryKeyRelatedField(read_only=True)
+    #  Я не понял как убрать из параметров read_only
+    # post = serializers.PrimaryKeyRelatedField(read_only=True)
 
     class Meta:
         model = Comment
-        fields = ('author', 'id', 'post', 'text', 'created')
-        # read_only_fields = ('author', 'post')
+        fields = '__all__'
+        read_only_fields = ('author', 'post')
 
 
 class PostSerializer(serializers.ModelSerializer):
@@ -28,6 +32,6 @@ class PostSerializer(serializers.ModelSerializer):
                                           read_only=True)
 
     class Meta:
-        fields = ('id', 'text', 'author', 'image',
-                  'pub_date', 'group', 'comments')
+        fields = '__all__'
         model = Post
+        read_only_fields = ('author',)
